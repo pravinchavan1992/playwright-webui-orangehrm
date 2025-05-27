@@ -5,17 +5,17 @@ const {
   getEmployeeData,
   createEmployee,
   loginToApp,
-  logOut
+  logOut,
 } = require("../../helper/employee-helper.js");
 
 test.describe.serial("Validate Employee registration feature", () => {
   const loginNameFile = "new-login-name.txt";
   const loginNamePath = path.resolve(__dirname, "../../tmp", loginNameFile);
-  test.beforeEach("Login to application", async ({loginPage, dashboard }) => {
+  test.beforeEach("Login to application", async ({ loginPage, dashboard }) => {
     await loginToApp(loginPage, dashboard, "Admin", "admin123");
   });
 
-  test.afterEach("Log out of application", async ({ dashboard}) => {
+  test.afterEach("Log out of application", async ({ dashboard }) => {
     await logOut(dashboard);
   });
 
@@ -58,7 +58,7 @@ test("@Smoke Validate new login creation and login with fixture", async ({
   await loginPage.clearSession();
   await loginPage.loginToApp(
     newEmployeeLogin.loginName,
-    newEmployeeLogin.password
+    newEmployeeLogin.password,
   );
   await loginPage.waitForPageLoad();
   await dashboard.validateHeader("PIM");

@@ -33,7 +33,7 @@ export default defineConfig({
         title: "Test Automation Report",
         useDetails: true,
         showError: true,
-        includeResults: ['pass', 'skipped', 'fail', 'flaky']
+        includeResults: ["pass", "skipped", "fail", "flaky"],
       },
     ],
   ],

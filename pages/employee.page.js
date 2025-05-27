@@ -14,24 +14,24 @@ export class Employee extends BasePage {
     this.mName = page.getByPlaceholder("Middle Name");
     this.lName = page.getByPlaceholder("Last Name");
     this.empId = page.locator("input.oxd-input").nth(4);
-    this.uploadInput = page.locator('input[type="file"]');
+    this.uploadInput = page.locator("input[type=\"file\"]");
     this.createLoginButton = page
       .getByText("Create Login Details")
       .locator("..")
       .locator("span");
-    this.loginName = page.locator('input[autocomplete="off"]').first();
-    this.passwordInput = page.locator('input[type="password"]').first();
-    this.confirmPasswordInput = page.locator('input[type="password"]').nth(1);
+    this.loginName = page.locator("input[autocomplete=\"off\"]").first();
+    this.passwordInput = page.locator("input[type=\"password\"]").first();
+    this.confirmPasswordInput = page.locator("input[type=\"password\"]").nth(1);
     this.statusEnabled = page.locator("label:has-text('Enabled') span");
     this.saveButton = page.getByRole("button", { name: "Save" });
     this.successToast = page.locator(".oxd-text--toast-message");
   }
 
   getTextBox = (placeHolderName) => this.page.getByPlaceholder(placeHolderName);
-  employeeHeader = (emp) => this.page.getByRole('link', { name: emp });
+  employeeHeader = (emp) => this.page.getByRole("link", { name: emp });
 
   async navigateToAddEmployee() {
-    await this.employeeHeader('Employee List').click();
+    await this.employeeHeader("Employee List").click();
     await this.commonButton("Add").waitFor({ state: "visible" });
     await this.click(this.commonButton("Add"));
   }
@@ -60,13 +60,18 @@ export class Employee extends BasePage {
   }
 
   async verifyToastMessage() {
-    await expect.poll(async ()=> {
-      return await this.successToast.isVisible()
-      ? await this.successToast.textContent()
-      : null
-    }, {
-      intervals: [1000, 2000, 5000],
-      timeout: 60000
-    }).toBe('Successfully Saved');
+    await expect
+      .poll(
+        async () => {
+          return (await this.successToast.isVisible())
+            ? await this.successToast.textContent()
+            : null;
+        },
+        {
+          intervals: [1000, 2000, 5000],
+          timeout: 60000,
+        },
+      )
+      .toBe("Successfully Saved");
   }
 }

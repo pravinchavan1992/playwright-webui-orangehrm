@@ -1,7 +1,6 @@
 import { test, expect } from "../../fixtures/fixture.js";
 
 test.describe.parallel("Validate navigation menus on dashboard", () => {
- 
   test.beforeEach("Login to application", async ({ loginPage, dashboard }) => {
     await loginPage.visit();
     await loginPage.loginToApp("Admin", "admin123");
@@ -11,7 +10,7 @@ test.describe.parallel("Validate navigation menus on dashboard", () => {
   test("Validate dashboard menus", async ({ dashboard }) => {
     await test.step("Validate link counts", async () => {
       const sideMenu = await dashboard.getAllSideMenu();
-      await expect(sideMenu).toHaveCount(12)
+      await expect(sideMenu).toHaveCount(12);
     });
 
     await test.step("Validate link names", async () => {
@@ -27,7 +26,7 @@ test.describe.parallel("Validate navigation menus on dashboard", () => {
         "Directory",
         "Maintenance",
       ];
-      const linkMenu  = await dashboard.getAllSideMenu();
+      const linkMenu = await dashboard.getAllSideMenu();
 
       for (const menu of expectedMenus) {
         await expect

@@ -6,7 +6,7 @@ export class LoginPage extends BasePage {
     this.loginButton = this.page.getByRole("button", { name: "Login" });
     this.errorMessage = this.page
       .getByRole("alert")
-      .locator("div") 
+      .locator("div")
       .filter({ hasText: "Invalid credentials" });
   }
 
@@ -17,7 +17,7 @@ export class LoginPage extends BasePage {
   }
 
   async isErrorMessageVisible() {
-    await this.errorMessage.waitFor({ state: "visible"});
+    await this.errorMessage.waitFor({ state: "visible" });
     return await this.errorMessage.isVisible();
   }
 
@@ -26,6 +26,4 @@ export class LoginPage extends BasePage {
     await this.fillInput(this.getLoginInputfield("Password"), password);
     await this.click(this.loginButton);
   }
-
- 
 }
