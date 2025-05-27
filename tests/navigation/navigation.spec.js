@@ -1,20 +1,14 @@
-import { test, expect } from "@playwright/test";
-import { LoginPage } from "../../pages/login.page.js";
-import { Dashboard } from "../../pages/dashboard.page.js";
+import { test, expect } from "../../fixtures/fixture.js";
 
 test.describe.parallel("Validate navigation menus on dashboard", () => {
-  /** @type {Dashboard} */
-  let dashboard;
-
-  test.beforeEach("Login to application", async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    dashboard = new Dashboard(page);
+ 
+  test.beforeEach("Login to application", async ({ loginPage, dashboard }) => {
     await loginPage.visit();
     await loginPage.loginToApp("Admin", "admin123");
     await dashboard.validateHeader("Dashboard");
   });
 
-  test("Validate dashboard menus", async ({ page }) => {
+  test("Validate dashboard menus", async ({ dashboard }) => {
     await test.step("Validate link counts", async () => {
       const sideMenu = await dashboard.getAllSideMenu();
       await expect(sideMenu).toHaveCount(12)
@@ -33,7 +27,7 @@ test.describe.parallel("Validate navigation menus on dashboard", () => {
         "Directory",
         "Maintenance",
       ];
-      const linkMenu = page.locator("ul.oxd-main-menu li");
+      const linkMenu  = await dashboard.getAllSideMenu();
 
       for (const menu of expectedMenus) {
         await expect

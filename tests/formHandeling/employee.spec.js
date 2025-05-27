@@ -1,65 +1,65 @@
-import { test, expect } from "@playwright/test";
-import { faker } from "@faker-js/faker";
-import path from "path";
-const {
-  getLoginName,
-  getEmployeeID,
-  getFirstName,
-  getMiddleName,
-  getLastName,
-} = require("../../utility/utilities.js");
+import { test, expect } from "../../fixtures/fixture.js";
+const fs = require("fs/promises");
+const path = require("path");
 const {
   getEmployeeData,
   createEmployee,
+  loginToApp,
+  logOut
 } = require("../../helper/employee-helper.js");
-import { LoginPage } from "../../pages/login.page.js";
-import { Dashboard } from "../../pages/dashboard.page.js";
-import { Employee } from "../../pages/employee.page.js";
 
 test.describe.serial("Validate Employee registration feature", () => {
-  let loginPage;
-  /** @type { Dashboard } */
-  let dashboard;
-  /** @type { Employee } */
-  let employee;
-  let newLoginName;
-
-  test.beforeEach("Login to application", async ({ page }) => {
-    loginPage = new LoginPage(page);
-    dashboard = new Dashboard(page);
-    employee = new Employee(page);
-
-    await loginPage.visit();
-    await loginPage.loginToApp("Admin", "admin123");
-    await page.waitForLoadState("networkidle");
-    await dashboard.validateHeader("Dashboard");
+  const loginNameFile = "new-login-name.txt";
+  const loginNamePath = path.resolve(__dirname, "../../tmp", loginNameFile);
+  test.beforeEach("Login to application", async ({loginPage, dashboard }) => {
+    await loginToApp(loginPage, dashboard, "Admin", "admin123");
   });
 
-  test.afterEach("Log out of application", async ({ page }) => {
-    await dashboard.logOut();
+  test.afterEach("Log out of application", async ({ dashboard}) => {
+    await logOut(dashboard);
   });
 
   test("Validate employee registration and other activities", async ({
-    page,
+    dashboard,
+    employeePage,
   }) => {
     await test.step("Add new Employee with profile picture", async () => {
       const option = getEmployeeData(false);
       await dashboard.navigateToMenu("PIM");
-      await createEmployee(employee, option, false);
+      await createEmployee(employeePage, option, false);
     });
 
     await test.step("Add new Employee with profile picture with login details", async () => {
       const option = getEmployeeData(true);
-      newLoginName = option.loginName;
+      await fs.mkdir(path.dirname(loginNamePath), { recursive: true });
+      await fs.writeFile(loginNamePath, option.loginName, "utf-8");
       await dashboard.navigateToMenu("PIM");
-      await createEmployee(employee, option, true);
+      await createEmployee(employeePage, option, true);
     });
   });
-  
-  test("Login to application with new credentials", async ({ page }) => {
+
+  test("Login to application with new credentials", async ({
+    loginPage,
+    dashboard,
+  }) => {
+    const newLoginName = await fs.readFile(loginNamePath, "utf-8");
     await loginPage.clearSession();
     await loginPage.loginToApp(newLoginName, "Test@123");
-    await page.waitForLoadState("networkidle");
+    await loginPage.waitForPageLoad();
     await dashboard.validateHeader("Dashboard");
   });
+});
+
+test("@Smoke Validate new login creation and login with fixture", async ({
+  newEmployeeLogin,
+  loginPage,
+  dashboard,
+}) => {
+  await loginPage.clearSession();
+  await loginPage.loginToApp(
+    newEmployeeLogin.loginName,
+    newEmployeeLogin.password
+  );
+  await loginPage.waitForPageLoad();
+  await dashboard.validateHeader("PIM");
 });

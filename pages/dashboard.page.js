@@ -14,6 +14,8 @@ export class Dashboard extends BasePage {
     }
     getMenuitem = (/** @type {any} */ menuitem) => this.page.getByRole("menuitem", { name: menuitem });
     getLink = (/** @type {any} */ linkName) => this.page.getByRole("link", { name: linkName });
+
+    
     
 
     async logOut () {

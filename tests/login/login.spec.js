@@ -1,26 +1,20 @@
-import { test, expect } from "@playwright/test";
-import { LoginPage } from "../../pages/login.page.js";
-import { Dashboard } from "../../pages/dashboard.page.js";
+import { test, expect } from "../../fixtures/fixture.js";
 
-test("Validate login functionality", async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const dashborad = new Dashboard(page);
+test("Validate login functionality", async ({ loginPage, dashboard }) => {
   await loginPage.visit();
   await loginPage.loginToApp("Admin", "admin123");
-  await dashborad.validateHeader("Dashboard");
+  await dashboard.validateHeader("Dashboard");
 });
 
-test("Validate invalid login", async ({ page }) => {
-  const loginPage = new LoginPage(page);
+test("Validate invalid login", async ({ loginPage }) => {
   await loginPage.visit();
   await loginPage.loginToApp("Admin", "admin1234");
   expect(await loginPage.isErrorMessageVisible()).toBe(true);
 });
 
-test("Validate session expiry", async ({ page }) => {
-  const loginPage = new LoginPage(page);
+test("Validate session expiry", async ({ loginPage }) => {
   await loginPage.visit();
   await loginPage.loginToApp("Admin", "admin123");
   await loginPage.clearSession();
-  await expect(page).toHaveURL("web/index.php/auth/login");
+  await loginPage.validateURL("web/index.php/auth/login");
 });

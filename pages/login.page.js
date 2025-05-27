@@ -26,4 +26,6 @@ export class LoginPage extends BasePage {
     await this.fillInput(this.getLoginInputfield("Password"), password);
     await this.click(this.loginButton);
   }
+
+ 
 }

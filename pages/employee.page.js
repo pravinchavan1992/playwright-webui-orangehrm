@@ -28,8 +28,10 @@ export class Employee extends BasePage {
   }
 
   getTextBox = (placeHolderName) => this.page.getByPlaceholder(placeHolderName);
+  employeeHeader = (emp) => this.page.getByRole('link', { name: emp });
 
   async navigateToAddEmployee() {
+    await this.employeeHeader('Employee List').click();
     await this.commonButton("Add").waitFor({ state: "visible" });
     await this.click(this.commonButton("Add"));
   }

@@ -17,10 +17,24 @@ export class BasePage {
     await this.page.waitForLoadState("networkidle");
     
   }
+  async validateURL(url){
+    return await expect(this.page).toHaveURL(url);
+  }
+
+  async waitForPageLoad(loadStrategy = "networkidle") {
+    const validStrategies = ["load", "domcontentloaded", "networkidle"];
+    
+    if (!validStrategies.includes(loadStrategy)) {
+      throw new Error(`Invalid load strategy: ${loadStrategy}`);
+    }
+  
+    // @ts-ignore
+    await this.page.waitForLoadState(loadStrategy);
+  }
 
   async click(locator, options = {}) {
     const element = typeof locator === 'string' ? this.page.locator(locator) : locator;
-    await element.waitFor({ state: 'visible' });
+    await element.waitFor({ state: 'visible', timeout: options.timeout ?? 5000});
     await element.click(options);
   }
   
