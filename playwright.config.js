@@ -30,9 +30,10 @@ export default defineConfig({
     [
       "@estruyf/github-actions-reporter",
       {
-        title: "My custom title",
+        title: "Test Automation Report",
         useDetails: true,
         showError: true,
+        includeResults: ['pass', 'skipped', 'fail', 'flaky']
       },
     ],
   ],
