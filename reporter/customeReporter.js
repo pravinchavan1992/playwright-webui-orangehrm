@@ -1,6 +1,6 @@
 const { Reporter } = require("@playwright/test/reporter");
 
-class MyReporter extends Reporter {
+class MyReporter  {
 
     onBegin(config, suite) {
         console.log(`Starting the run with ${suite.allTests().length} tests`);
