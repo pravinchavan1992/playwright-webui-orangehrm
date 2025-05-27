@@ -2,8 +2,8 @@ import { test, expect } from "@playwright/test";
 import { LoginPage } from "../pages/login.page.js";
 import { Dashboard } from "../pages/dashboard.page.js";
 import { Employee } from "../pages/employee.page.js";
-const fs = require("fs/promises");
-const path = require("path");
+import fs from "fs/promises";
+import path from "path";
 const {
     getEmployeeData,
     createEmployee,

@@ -7,7 +7,7 @@ const {
   getFirstName,
   getMiddleName,
   getLastName,
-} = require("../utility/utilities.js");
+} = require("../utils/utilities.js");
 
 export function getEmployeeData(withLogin) {
   const option = {
